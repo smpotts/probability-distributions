@@ -1,0 +1,72 @@
+# Quality Control in Manufacturing
+A factory produces light bulbs, and the probability that a randomly selected bulb is defective is 5%. 
+
+### Load libraries
+library(ggplot2)
+
+## Experiments
+For the purposes of the experiment we select 20 bulbs.
+
+**What is the probability of finding exactly 3 defective bulbs?**
+Want to use `dbinom` here to get the probability "density" of a particular value.
+```{r}
+exactly3 <- dbinom(3, size = 20, prob = 0.05)
+exactly3
+```
+
+**What is the probability of finding at most 3 defective bulbs?**
+This is essentially everything up to 3. The `pbinom` function gives us the distribution probability.
+```{r}
+at_most3 <- pbinom(3, size = 20, prob = 0.05, lower.tail = TRUE)
+at_most3
+```
+
+**Simulate 100 trials of inspecting 20 bulbs and visualize the distribution.**
+```{r}
+# simulate 100 trials of 20 inspections
+set.seed(29)  # for reproducibility
+random_sample <- rbinom(100, size = 20, prob = 0.05)
+
+# ugly strip chart
+stripchart(random_sample,
+           method = "stack",
+           las = 1,
+           pch = 16,
+           cex = 0.75,
+           ylim = c(0, 10),
+           xlim = c(0, 5),
+           xlab = "Number of Defective Bulbs",
+           ylab = "Frequency",
+           main = "Defective Bulbs in a Random Sample of 20")
+
+# convert to dataframe for plotting
+df <- data.frame(Defective_Bulbs = random_sample)
+df
+
+# plot histogram of simulated defective bulbs
+ggplot(df, aes(x = Defective_Bulbs)) +
+  geom_bar(fill = "skyblue", color = "black") +
+  theme_minimal() +
+  labs(title = "Distribution of Defective Bulbs in 100 Trials",
+       x = "Number of Defective Bulbs",
+       y = "Frequency")
+
+print(paste("Probability of exactly 3 defective bulbs:", exactly3))
+print(paste("Probability of at most 3 defective bulbs:", at_most3))
+```
+
+**Can we use the Central Limit Theorem to make the binomial distribution look more like a normal distribution?**
+```{r}
+set.seed(29)  # for reproducibility
+random_sample <- rbinom(1000, size = 1000, prob = 0.05)
+
+df <- data.frame(Defective_Bulbs = random_sample)
+
+# plot histogram of simulated defective bulbs
+ggplot(df, aes(x = Defective_Bulbs)) +
+  geom_bar(fill = "skyblue", color = "black") +
+  theme_minimal() +
+  labs(title = "Distribution of Defective Bulbs in 100 Trials",
+       x = "Number of Defective Bulbs",
+       y = "Frequency")
+```

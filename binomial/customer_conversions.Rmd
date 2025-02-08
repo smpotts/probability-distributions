@@ -1,0 +1,33 @@
+# Customer Conversions
+A company sends out 500 promotional emails. The probability of a response is 2%.
+
+### Load libraries
+library(ggplot2)
+
+## Experiments
+**What is the probability of at least 15 responses?**
+```{r}
+pbinom(15, size = 500, prob = 0.02, lower.tail = FALSE)
+```
+
+**What does the distribution look like if we simulate 500 trials?**
+```{r}
+simulated_responses <- rbinom(500, size = 500, prob = 0.02)
+
+# convert to dataframe
+df_responses <- data.frame(Responses = simulated_responses)
+summary(df_responses)
+
+# histogram
+ggplot(df_responses, aes(x = Responses)) +
+  geom_histogram(binwidth = 2, fill = "lightcoral", color = "black") +
+  theme_minimal() +
+  labs(title = "Distribution of Customer Responses in 500 Simulations",
+       x = "Number of Responses",
+       y = "Frequency")
+```
+
+
+
+
+

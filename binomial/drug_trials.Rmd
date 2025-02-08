@@ -1,0 +1,46 @@
+# Drug Trials 
+A new drug has a 70% success rate.
+
+### Load libraries
+library(ggplot2)
+
+### Experiments
+Take a random sample of 10 patients.
+
+**What is the probability that at least 8 are successfully treated?**
+```{r}
+pbinom(8, size = 10, prob = 0.7, lower.tail = FALSE)
+```
+
+**Median number of successful treatments**
+For looking at the median we can use `qbinom` to look at the distribution for a specific quartile, in this case the median so .50.
+```{r}
+qbinom(0.5, size = 10, prob = 0.7)
+```
+
+**Binomial probabilities for 0 to 10 successes**
+```{r}
+successes <- 0:10
+probabilities <- dbinom(successes, size = 10, prob = 0.7)
+
+plot(successes,
+     probabilities,
+     type = "h",
+     lwd = 4,
+     las = 1,
+     xlab = "Number of Patients with Successes",
+     ylab = "Probability")
+
+# fancier with ggplot
+df_success <- data.frame(Successes = successes, Probability = probabilities)
+
+# plot probability mass function
+ggplot(df_success, aes(x = Successes, y = Probability)) +
+  geom_bar(stat = "identity", fill = "seagreen", color = "black") +
+  theme_minimal() +
+  labs(title = "Probability Mass Function of Drug Successes",
+       x = "Number of Successful Treatments",
+       y = "Probability")
+```
+
+
