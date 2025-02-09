@@ -1,0 +1,32 @@
+# Olympic Archery Scores
+In Olympic archery, competitors aim to hit the bullseye for the highest score. The total score over 10 rounds for elite
+archers follows a normal distribution with:
+    Mean score = 85
+    Standard deviation = 5
+
+**What is the probability of an archer scoring below 80?**
+```{r}
+pnorm(80, mean = 85, sd = 5)
+```
+
+**What is the minimum score someone must receive to be in the top 10%?**
+This would mean they are in the 90th percentile.
+```{r}
+qnorm(0.90, mean = 85, sd = 5)
+```
+
+**Simulate 1000 Olympic archers**
+```{r}
+# set seed for reproducibility
+set.seed(42)
+archery_scores <- rnorm(1000, mean = 85, sd = 5)
+
+library(ggplot2)
+df_scores <- data.frame(Score = archery_scores)
+
+ggplot(df_scores, aes(x = Score)) +
+  geom_histogram(aes(y = ..density..), bins = 30, fill = "blue", color = "black") +
+  stat_function(fun = dnorm, args = list(mean = 85, sd = 5), color = "red", size = 1) +
+  theme_minimal() +
+  labs(title = "Olympic Archery Score Distribution", x = "Score", y = "Density")
+```

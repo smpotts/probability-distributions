@@ -1,0 +1,32 @@
+# Rollercoaster Speeds
+Roller coaster speeds follow a normal distribution due to engineering constraints and safety standards. 
+For a famous amusement park, the speeds of rides are normally distributed with:
+    Mean speed = 90 km/h
+    Standard deviation = 15 km/h
+
+**Simulate rollercoaster speeds for 1000 rollercoasters**
+```{r}
+# set seed and generate 1000 rollercoaster speeds
+set.seed(42)
+coaster_speeds <- rnorm(1000, mean = 90, sd = 15)
+
+# put the data into a data frame
+df_speeds <- data.frame(Speed = coaster_speeds)
+
+# create a histogram
+ggplot(df_speeds, aes(x = Speed)) +
+  geom_histogram(aes(y = ..density..), bins = 30, fill = "orange", color = "black") +
+  stat_function(fun = dnorm, args = list(mean = 90, sd = 15), color = "red", size = 1) +
+  theme_minimal() +
+  labs(title = "Roller Coaster Speed Distribution", x = "Speed (km/h)", y = "Density")
+```
+
+**What's the probability of the rollercoaster going over 100km/h?**
+```{r}
+pnorm(110, mean = 90, sd = 15, lower.tail = FALSE)
+```
+
+**What's the speed of the slowest 5% of rollercoasters?**
+```{r}
+qnorm(0.05, mean = 90, sd = 15)
+```
