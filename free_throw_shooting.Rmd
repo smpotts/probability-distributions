@@ -1,0 +1,36 @@
+# Free-Throw Shooting in Basketball
+A basketball player has a 63% free-throw success rate.
+
+### Load libraries
+
+## Experiments
+Set probability
+p <- 0.63 
+
+**What is the probability that they make their first shot on the 3rd attempt?**
+```{r}
+# probability of first success on 3rd shot
+dgeom(3, prob = p)
+```
+
+**What is the probability that they make at least 3 attempts before scoring?**
+```{r}
+pgeom(3, prob = p, lower.tail = TRUE)
+```
+
+**Simulate 1000 shooting sequences.**
+```{r}
+simulated_shots <- rgeom(1000, prob = p)
+
+# Convert to dataframe
+df_shots <- data.frame(Attempts = simulated_shots)
+
+# plot histogram
+ggplot(df_shots, aes(x = Attempts)) +
+  geom_bar(fill = "lightcoral", color = "black") +
+  theme_minimal() +
+  labs(title = "Simulated Free-Throw Attempts Until First Make",
+       x = "Attempts Until First Success",
+       y = "Frequency")
+```
+

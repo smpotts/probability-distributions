@@ -1,0 +1,42 @@
+# Birthday Paradox
+The problem asks:
+"What is the probability that at least two people in a group of 𝑛 have the same birthday?"
+
+With 23 people, the probability is ≈ 50.7%.
+With 50 people, the probability is ≈ 97%.
+With 70 people, it's >99.9%.
+
+### Load libraries
+library(ggplot2)
+
+## Experiments
+**Compute at least one shared birthday for different group sizes.**
+```{r}
+# function to calculate probability of at least one shared birthday
+birthday_prob <- function(n) {
+  prob_unique <- 1  # start with 100% unique birthdays
+  for (i in 1:(n-1)) {
+    prob_unique <- prob_unique * (365 - i) / 365
+  }
+  return(1 - prob_unique)  # complement rule
+}
+
+# compute probabilities for group sizes 1 to 50
+group_sizes <- 1:50
+probs <- sapply(group_sizes, birthday_prob)
+probs
+
+# convert to data frame for plotting
+df_birthday <- data.frame(GroupSize = group_sizes, Probability = probs)
+
+# plotting probabilities
+ggplot(df_birthday, aes(x = GroupSize, y = Probability)) +
+  geom_line(color = "blue", size = 1.2) +
+  geom_point(color = "red") +
+  theme_minimal() +
+  labs(title = "Birthday Paradox Probability Curve",
+       x = "Number of People in Room",
+       y = "Probability of Shared Birthday") +
+  scale_y_continuous(labels = scales::percent_format())
+```
+
