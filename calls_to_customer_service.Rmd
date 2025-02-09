@@ -1,0 +1,37 @@
+# Calls to a Customer Service Center
+A call center receives an average of 12 calls per hour.
+
+**Probability of getting exactly 10 calls in an hour**
+```{r}
+# lambda is our sample mean
+lambda <- 12
+
+dpois(10, lambda = lambda)
+```
+
+**Probability of getting 15 calls or fewer in an hour**
+```{r}
+ppois(15, lambda, lower.tail = TRUE)
+```
+
+**What is the number of calls received at the 95th percentile?**
+```{r}
+qpois(0.95, lambda = lambda)
+```
+
+**Simulate 1000 hours and visualize the distribution**
+```{r}
+set.seed(29)
+# simulate 1000 hours
+sample <- rpois(1000, lambda = lambda)
+
+# visualizing simulated Poisson distribution
+library(ggplot2)
+df_calls <- data.frame(Calls = sample)
+
+# create a histogram visualizing the frequencies
+ggplot(df_calls, aes(x = Calls)) +
+  geom_histogram(binwidth = 1, fill = "lightblue", color = "black") +
+  theme_minimal() +
+  labs(title = "Poisson Distribution: Calls per Hour", x = "Calls", y = "Frequency")
+```

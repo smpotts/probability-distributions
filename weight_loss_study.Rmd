@@ -1,0 +1,35 @@
+# Weight Loss Study
+A nutritionist wants to estimate the true average weight loss based on a small sample.
+
+T-distributions are often used when there is a small population where we don't know the population standard deviation.
+
+# Experiments
+```{r}
+# sample weight loss data (kg)
+weight_loss <- c(2.1, 3.0, 1.8, 2.5, 2.9, 3.2, 2.7, 1.9, 2.4, 2.6)
+
+# compute 95% confidence interval
+t_conf_int <- t.test(weight_loss, conf.level = 0.95)
+t_conf_int
+
+# get the t value and degrees of freedom
+t_value <- t_conf_int$statistic
+df <- length(weight_loss) - 1
+df
+
+# density of the observed t value
+dt(t_value, df)
+
+# calculate random t values
+random_t_values <- rt(1000, df)
+
+# put the values in a data frame
+df_random <- data.frame(t_values = random_t_values)
+
+# plot a histogram with a t distribution
+ggplot(df_random, aes(x = t_values)) +
+  geom_histogram(aes(y = ..density..), bins = 30, fill = "lightblue", color = "black") +
+  stat_function(fun = dt, args = list(df = df), color = "red", size = 1) +
+  theme_minimal() +
+  labs(title = "Simulated t-Distribution for Weight Loss Study", x = "t-values", y = "Density")
+```

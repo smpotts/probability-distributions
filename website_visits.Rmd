@@ -1,0 +1,31 @@
+# Website Visits 
+For the purposes of this experiment, let's say a website gets 4 visits per minute on average.
+
+**What's the probability of getting 6 page views in one minute?**
+```{r}
+dpois(6, lambda = 4)
+```
+
+**What's the probability of getting 8 of fewer?**
+```{r}
+ppois(8, lambda = 4, lower.tail = TRUE)
+```
+
+**How many page views occur at the 90th percentile?**
+```{r}
+qpois(.90, lambda = 4)
+```
+
+**Simulate 10 hours worth of page views**
+```{r}
+set.seed(42)
+simulated_visits <- rpois(6000, lambda)
+
+# visualizing simulated Poisson distribution
+df_visits <- data.frame(Visits = simulated_visits)
+
+ggplot(df_visits, aes(x = Visits)) +
+  geom_histogram(binwidth = 1, fill = "lightblue", color = "black") +
+  theme_minimal() +
+  labs(title = "Poisson Distribution: Website Visits per Minute", x = "Visits", y = "Frequency")
+```
